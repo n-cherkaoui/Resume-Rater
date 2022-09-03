@@ -2,7 +2,8 @@
 
 This C program scans input from two text files: Resume.txt and Keywords.txt. Then it searches the resume for the provided keywords and prints to console the number of keywords found.
 
-# Example Resume.txt
+# Example 
+## Resume.txt
 
 JANE SOMEBODY
 123 Anywhere Street, City, State
@@ -21,10 +22,10 @@ REFERENCES
 
 available upon request
 
-# Example Keywords.txt
+## Keywords.txt
 
 MBA, Harvard, 2 years
 
-# Example Output
+## Output
 
 3 Keywords Found.
