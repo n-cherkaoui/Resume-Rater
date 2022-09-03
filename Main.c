@@ -2,7 +2,7 @@
 
 This program scans input from Resume.txt and Keywords.txt, searches the resume for the example keywords, and prints to console the number of keywords found.
 
-Note: I developed this program before my understanding of dynamic memory allocation.*/
+Note: I developed this program prior to my understanding of dynamic memory allocation.*/
 
 // pre-processor directives
 #define _CRT_SECURE_NO_WARNINGS
