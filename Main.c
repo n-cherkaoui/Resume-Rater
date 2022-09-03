@@ -11,6 +11,38 @@ Note: I developed this program before my understanding of dynamic memory allocat
 #include <string.h>
 #include <ctype.h>
 
+
+void keyword_Reader(char resume[], int* counter); //Reads in keywords from keywords.txt and calls count_Occurences
+int count_Occurrences(char* resume, char* keywords); //Loops through resume[] and updates keyword_Count if a keyword is found.
+
+
+int main() {
+	char resume[10000];
+	int counter=0, i = 0;
+	FILE* resume_text;
+
+	resume_text = fopen("Resume.txt", "r"); //Opens resume.txt for reading
+	if (resume_text == NULL) {
+		printf("Failed to open the file.\n");
+		exit(-1);
+	}
+
+	while (feof(resume_text) != 1) { //Reads resume.txt into the resume array
+		resume[i] = fgetc(resume_text);
+		i++;
+	} 
+	resume[i] = '\0';
+
+	fclose(resume_text);
+
+	keyword_Reader(resume, &counter);
+
+	printf("%i Keywords Found.\n", counter); //Prints keywords found in resume
+
+	return 0;
+} //Driver Function
+
+
 void keyword_Reader(char resume[], int* counter) {
 	FILE* keywords_text;
 	char keywords[10000];
@@ -21,29 +53,27 @@ void keyword_Reader(char resume[], int* counter) {
 		exit(-1);
 	}
 
-	while(fscanf(keywords_text, " %[^,] ,", keywords)!=EOF) {
+	while (fscanf(keywords_text, " %[^,] ,", keywords) != EOF) {
 		*counter += count_Occurrences(resume, keywords);
 	}
 
 	fclose(keywords_text);
-} //Sets the keywords array equal to a keyword and then calls count_Occurences to count the occurences of that keyword, before moving on to the next.
+} 
 
-int count_Occurrences(char* str, char* toSearch)
+int count_Occurrences(char* resume, char* keywords)
 {
-	int i, j, found, count;
+	int i, j, found, keyword_Count = 0;
 	int stringLen, searchLen;
 
-	stringLen = strlen(str); //length of the resume
-	searchLen = strlen(toSearch); //length of the specific keyword
-
-	count = 0;
+	stringLen = strlen(resume); //length of the resume
+	searchLen = strlen(keywords); //length of the specific keyword
 
 	for (i = 0; i <= stringLen - searchLen; i++)
 	{
 		found = 1;
 		for (j = 0; j < searchLen; j++)
 		{
-			if (toupper(str[i + j]) != toupper(toSearch[j]))
+			if (toupper(resume[i + j]) != toupper(keywords[j]))
 			{
 				found = 0;
 				break;
@@ -52,35 +82,9 @@ int count_Occurrences(char* str, char* toSearch)
 
 		if (found == 1)
 		{
-			count++;
+			keyword_Count++;
 		}
 	}
 
-	return count;
-} //Checks resume[] index by index and checks if the next few indexes match keyword[].
-
-int main() {
-	char resume[10000];
-	int counter=0, i = 0;
-	FILE* resume_text;
-
-	resume_text = fopen("Resume.txt", "r");
-	if (resume_text == NULL) {
-		printf("Failed to open the file.\n");
-		exit(-1);
-	}
-
-	while (feof(resume_text) != 1) {
-		resume[i] = fgetc(resume_text);
-		i++;
-	} //Reads resume.txt into resume[] character by character.
-	resume[i] = '\0';
-
-	fclose(resume_text);
-
-	keyword_Reader(resume, &counter);
-
-	printf("%i Keywords Found.\n", counter);
-
-	return 0;
-} //Driver Function
+	return keyword_Count;
+} 
